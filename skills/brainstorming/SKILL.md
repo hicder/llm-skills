@@ -1,6 +1,6 @@
 ---
 name: brainstorming
-description: "You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation."
+description: "You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Also use when asked to come up with a plan. Explores user intent, requirements and design before implementation."
 ---
 
 # Brainstorming Ideas Into Designs
@@ -9,7 +9,7 @@ description: "You MUST use this before any creative work - creating features, bu
 
 Help turn ideas into fully formed designs and specs through natural collaborative dialogue.
 
-Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, present the design in small sections (200-300 words), checking after each section whether it looks right so far.
+Start by understanding the current project context (use multiple parallel explore subagents if necessary to help with understanding the current project context), then ask questions one at a time to refine the idea. Once you understand what you're building, present the design in small sections (200-300 words), checking after each section whether it looks right so far.
 
 ## The Process
 
@@ -33,16 +33,12 @@ Start by understanding the current project context, then ask questions one at a 
 - Be ready to go back and clarify if something doesn't make sense
 
 ## After the Design
-
 **Documentation:**
-- Write the validated design to `docs/plans/YYYY-MM-DD-<topic>-design.md`
-- Use elements-of-style:writing-clearly-and-concisely skill if available
-- Commit the design document to git
+- Write the validated design
 
 **Implementation (if continuing):**
 - Ask: "Ready to set up for implementation?"
-- Use superpowers:using-git-worktrees to create isolated workspace
-- Use superpowers:writing-plans to create detailed implementation plan
+- Use writing-plans skill to create detailed implementation plan
 
 ## Key Principles
 
