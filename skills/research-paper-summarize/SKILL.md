@@ -53,6 +53,20 @@ Scrutinize the evaluation and design before recommending adoption:
 - Point to which specific **sections** of the paper are most actionable (and why), tailored to the user's stack/context if known.
 - End with **1 concrete next step** for deeper investigation and **3 brief follow-up topics** the user can ask about.
 
+## 3. Save to Repo & Output Verbatim
+
+After drafting the summary following the structure above:
+
+1. **Create a directory in the current repo:**
+   - Locate the current repository root (e.g., `git rev-parse --show-toplevel`), or use the current working directory if not inside a Git repository, unless the user specifies a target path.
+   - Create a concise, descriptive kebab-case directory for the paper at `<repo-root>/<paper-slug>/` (e.g., `flash-attention-3`, `raft-consensus`).
+2. **Write `summary.md`:**
+   - Write the complete 6-part Markdown summary to `<repo-root>/<paper-slug>/summary.md`.
+3. **Output the exact same content in the harness:**
+   - Output the **exact, verbatim contents** of `summary.md` directly in your response.
+   - Do **not** replace the output with just a file link, abbreviate it, paraphrase it, or diverge between the file and the chat response—both `summary.md` and the harness output must contain the exact same summary content.
+   - If you include a note with the saved file path, keep it to a single brief line separated from the summary without modifying the summary text itself.
+
 ## Style & Rigor Rules
 - Write like a senior systems engineer reviewing a paper for peers: concise, direct, and skeptical of unqualified marketing claims.
 - Use short paragraphs, scannable bold lead-ins, tables, and exact terminology from the source.
