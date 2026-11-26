@@ -1,89 +1,71 @@
-# LLM Skills - Rust Development
+# LLM Skills
 
-A collection of specialized skills for Large Language Models to assist with Rust development tasks.
+A collection of reusable skills for LLM coding assistants and agents, paired with an install script that links them into local agent skill directories.
 
-## Skills Overview
+## Skills
 
-### [rust-general-patterns](rust-general-patterns/)
+### [`commit-changes`](skills/commit-changes/)
 
-Comprehensive Rust development patterns covering:
+Safely commits local work onto a fresh branch off the latest default branch (`origin/main` or `origin/master`):
 
-- **Project Setup**: Creating new CLI/TUI applications from scratch, Cargo.toml configuration, module organization
-- **Code Patterns**: Trait-based abstractions, error handling (anyhow/thiserror), CLI parsing (clap), structured logging (tracing)
-- **System Integration**: Linux device I/O (v4l2), color space conversion, frame timing and performance monitoring
-- **Best Practices**: Defensive programming, module organization, testing patterns
+- Inspects working tree status, staged vs. unstaged diffs, and detects `origin/main` or `origin/master`
+- Stashes uncommitted changes, fast-forwards the local base branch from `origin` (stopping on divergence), creates a new branch (`<type>/<short-kebab-summary>`), and restores the stash
+- Writes a **Conventional Commits** title and structured body explaining what changed and why, then stages, commits, and verifies the result
 
-#### Files
-- `SKILL.md` - Main skill description with quick reference
-- `Rust-Project-Setup.md` - Step-by-step project implementation workflow
-- `Rust-Patterns.md` - Comprehensive pattern reference and examples
+### [`executive-summary`](skills/executive-summary/)
 
-### [rust-async-patterns](rust-async-patterns/)
+Produces a scannable, high-signal executive research brief from a report, PDF, article, or long document:
 
-Production-ready patterns for async Rust programming with Tokio:
+- Captures exact numbers, entities, and source metadata before drafting
+- Structures output into: Header & Central Thesis, 5–7 Numbered Takeaways (with charts/tables and KPI callouts), Implications Table (`Entity or Segment | Outlook | Rationale`), Analytical Synthesis, Bottom Line, and Follow-Up Options
 
-- **Async Basics**: Future execution model, tasks, runtime configuration
-- **Concurrency**: JoinSet, channels (mpsc, broadcast, oneshot, watch)
-- **Error Handling**: anyhow, thiserror, timeout patterns
-- **Advanced Topics**: Async traits, streams, graceful shutdown, resource management
+### [`release-zed`](skills/release-zed/)
 
-#### Files
-- `SKILL.md` - Complete async patterns guide with code examples
+Cuts a GitHub release for a forked Zed branch and packages `/Applications/Zed Nightly.app`:
 
-## Quick Reference
+- Verifies branch push status, `gh` authentication, and version parity between `Info.plist` (`CFBundleShortVersionString`) and `crates/zed/Cargo.toml`
+- Collects branch-specific commits (instead of relying on `--generate-notes`) and builds a compare link from the base commit
+- Copies `/Applications/Zed Nightly.app` to a temporary directory, strips extended attributes (`xattr -cr`), zips with `ditto -c -k --norsrc --keepParent` (preserving the code signature while avoiding `__MACOSX`/`._*` artifacts), and verifies with `unzip -l` and `codesign --verify`
+- Creates a GitHub release targeting the current branch and uploads `Zed-Nightly.zip`
 
-### Error Handling Decision
+### [`research-paper-summarize`](skills/research-paper-summarize/)
 
-```
-Is this a library?
-├─ Yes → Use thiserror for typed errors
-└─ No (application) → Use anyhow with .context()
-```
+Produces a systems-engineering breakdown of a research paper, arXiv link, PDF, or technical system:
 
-### Common Dependencies
+- Follows a 6-part structure: Header & Central Thesis, Headline Results (with caveats), Deep-Dive per Innovation, Novelty vs. Established Techniques table, Limitations/Regressions/Conditional Wins, and Reusable Takeaways & Actionable Next Steps
+- Saves the full summary to `<repo-root>/<paper-slug>/summary.md` and outputs the exact same Markdown verbatim in the assistant response
 
-| Need | Crate | Notes |
-|------|-------|-------|
-| Error handling (app) | `anyhow` | Flexible, ergonomic |
-| Error handling (lib) | `thiserror` | Typed errors |
-| CLI parsing | `clap` v4 | Use derive feature |
-| TUI framework | `ratatui` | With crossterm |
-| Configuration | `serde` + `toml` | Standard approach |
-| Async runtime | `tokio` | Most popular |
-| HTTP client | `reqwest` | High-level, async |
-| Logging | `tracing` | Structured logging |
+## Installation
 
-### Cargo Commands
+Run [`install.sh`](install.sh) to symlink every skill under [`skills/`](skills/) into your local agent skill directories:
 
 ```bash
-cargo check          # Fast compilation check
-cargo build          # Debug build
-cargo build --release # Optimized build
-cargo test           # Run tests
-cargo clippy         # Lint code
-cargo fmt            # Format code
-cargo doc --open     # Generate docs
+./install.sh
 ```
 
-## Usage
+The script links each `skills/<skill-name>` folder into:
 
-These skills are designed to be used by an LLM assistant when helping with Rust development tasks. Each skill provides:
+- `~/.claude/skills`
+- `~/.agents/skills`
+- `~/.gemini/config/skills`
 
-1. **When to use**: Guidance on when to apply the patterns
-2. **Code examples**: Production-ready implementation patterns
-3. **Best practices**: Proven approaches for maintainable code
-4. **Common pitfalls**: What to avoid and why
+If one of those target directories is itself a symlink, `install.sh` replaces it with a real directory first. Existing non-symlink files or directories at individual skill destinations (`<target_dir>/<skill-name>`) are skipped rather than overwritten.
 
 ## Structure
 
-```
+```text
 llm-skills/
-├── rust-general-patterns/
-│   ├── SKILL.md              # Skill metadata and overview
-│   ├── Rust-Project-Setup.md # Project implementation guide
-│   └── Rust-Patterns.md      # Code patterns reference
-└── rust-async-patterns/
-    └── SKILL.md              # Async patterns guide
+├── README.md
+├── install.sh
+└── skills/
+    ├── commit-changes/
+    │   └── SKILL.md
+    ├── executive-summary/
+    │   └── SKILL.md
+    ├── release-zed/
+    │   └── SKILL.md
+    └── research-paper-summarize/
+        └── SKILL.md
 ```
 
 ## License
