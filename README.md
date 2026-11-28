@@ -4,6 +4,14 @@ A collection of reusable skills for LLM coding assistants and agents, paired wit
 
 ## Skills
 
+### [`analyze-stock`](skills/analyze-stock/)
+
+Delivers an objective, structured equity analysis of a stock or public company:
+
+- Evaluates 7 dimensions in order: Company Overview, Peer Comparison, Financial Statements, Macroeconomic Factors, Sectoral Rotation, Management Outlook, and Shareholding Analysis
+- Assigns a clear verdict and score out of 5 for each dimension, backed by evidence-based analysis
+- Accounts for additional company-specific risks or catalysts and concludes with a synthesis of the scores and overall assessment
+
 ### [`commit-changes`](skills/commit-changes/)
 
 Safely commits local work onto a fresh branch off the latest default branch (`origin/main` or `origin/master`):
@@ -58,6 +66,8 @@ llm-skills/
 ├── README.md
 ├── install.sh
 └── skills/
+    ├── analyze-stock/
+    │   └── SKILL.md
     ├── commit-changes/
     │   └── SKILL.md
     ├── executive-summary/
